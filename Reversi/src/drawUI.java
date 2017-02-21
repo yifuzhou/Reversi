@@ -69,8 +69,10 @@ public class drawUI extends JFrame {
 //    		    	System.out.println("x is : " + pieces.getText());
 //    		    	ImageIcon image2 = new ImageIcon("graph/white.jpg");
 //    		    	pieces.setIcon(image2);
-    		    	game.AIreaction(pieces.getText());
+    		    	game.printPlayerMove(pieces.getText());
     		    	print(game, panel);
+    		    	game.AIreaction();
+    		    	//print(game, panel);
     		    
     		    	
     		    }
@@ -81,39 +83,3 @@ public class drawUI extends JFrame {
        }
 
 }
-
-//import java.awt.Dimension;
-//import java.awt.event.MouseAdapter;
-//import java.awt.event.MouseEvent;
-//
-//import javax.swing.JFrame;
-//import javax.swing.JLabel;
-//import javax.swing.JPanel;
-//
-//public class drawUI extends JFrame {
-//
-//    public static void main(String[] args) {
-//    final JFrame frame = new drawUI();
-//    final JPanel panel = new JPanel();
-//    panel.setLayout(null);
-//    frame.setContentPane(panel);
-//
-//    frame.addMouseListener(new MouseAdapter() {
-//        @Override
-//        public void mouseClicked(MouseEvent e) {
-//        // if you want an image instead, use the JLabel(Icon image)
-//        // constructor
-//        JLabel label = new JLabel("test");
-//        label.setBounds(e.getX(), e.getY(), label.getPreferredSize().width, label
-//            .getPreferredSize().height);
-//        panel.add(label);
-//        panel.validate();
-//        frame.repaint();
-//        }
-//    });
-//
-//    frame.setSize(new Dimension(200, 200));
-//    frame.setVisible(true);
-//    }
-//
-//}

@@ -10,6 +10,7 @@ class LegalMoveDir {
 	}
 }
 
+
 public class Rule {
 	
 	/*
