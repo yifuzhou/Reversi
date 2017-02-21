@@ -1,25 +1,31 @@
-
 import javax.swing.*;
-
-import com.sun.glass.events.MouseEvent;
-
 import java.awt.*;
-import java.awt.image.ImageObserver;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-import javax.swing.event.*;
-
-class MyMouseInputAdapter extends MouseInputAdapter{
-	   Point point=new Point(0,0); //坐标点
-	   
-	      
-	   
-}
-
-public class drawUI extends JPanel{
+public class drawUI extends JFrame {
+    
+	public static void print(Reversi game, JPanel panel) {
+		for (int y = 0; y < 8; y++) {
+	    	   for (int x = 0; x < 8; x++) {
+	    		   JLabel pieces = new JLabel(); 
+	    		   if (game.board[y][x] == 0) {
+	    			   pieces.setIcon(new ImageIcon("graph/empty.jpg"));
+	        	       panel.add(pieces, 0);
+	    		   }
+	    		   if (game.board[y][x] == -1) {
+	    			   pieces.setIcon(new ImageIcon("graph/black.jpg"));
+	        	       panel.add(pieces, 0);
+	    		   }
+	    		   if (game.board[y][x] == 1) {
+	    			   pieces.setIcon(new ImageIcon("graph/white.jpg"));
+	        	       panel.add(pieces, 0);
+	    		   }
+	    	       Dimension size_p = pieces.getPreferredSize();
+	    	       pieces.setBounds(26 + x * 37, 26 + y * 37, size_p.width, size_p.height);
+	    	   }
+		}	
+	}
 
    public static void main(String[] args) {
        JFrame frame=new JFrame("Reversi");  //title
@@ -35,37 +41,45 @@ public class drawUI extends JPanel{
        panel.add(label, -1);
        Dimension size = label.getPreferredSize();
        label.setBounds(0, 0, size.width, size.height);
-       
-       label.addMouseListener(new MouseAdapter() 
-       {
-    	   public void mousePressed(MouseEvent arg0) {
-    			  
-        	   System.out.println("click@");
-        	   ImageIcon image2 = new ImageIcon("graph/white.jpg");
-               label.setIcon(image2);
-           }
-       });
-       
-       
-	      MyMouseInputAdapter listener=new MyMouseInputAdapter();  //鼠标事件处理
-	      label.addMouseListener(listener);  //增加标签的鼠标事件处理
-	      label.addMouseMotionListener(listener);       
-       
-//       for (int y = 0; y < 8; y++) {
-//    	   for (int x = 0; x < 8; x++) {
-//    		   JLabel empty = new JLabel();  
-//    		   empty.setIcon(new ImageIcon("graph/empty.jpg"));
-//    	       panel.add(empty, 0);
-//    	       Dimension size_e = empty.getPreferredSize();
-//    	       empty.setBounds(26 + x * 37, 26 + y * 37, size_e.width, size_e.height);
-//    	   }
-//       }
+  
+       Reversi game = new Reversi();
+       for (int y = 0; y < 8; y++) {
+    	   for (int x = 0; x < 8; x++) {
+    		   JLabel pieces = new JLabel(); 
+    		   if (game.board[y][x] == 0) {
+    			   pieces.setIcon(new ImageIcon("graph/empty.jpg"));
+        	       panel.add(pieces, 0);
+    		   }
+    		   if (game.board[y][x] == -1) {
+    			   pieces.setIcon(new ImageIcon("graph/black.jpg"));
+        	       panel.add(pieces, 0);
+    		   }
+    		   if (game.board[y][x] == 1) {
+    			   pieces.setIcon(new ImageIcon("graph/white.jpg"));
+        	       panel.add(pieces, 0);
+    		   }
+    	       Dimension size_p = pieces.getPreferredSize();
+    	       pieces.setBounds(26 + x * 37, 26 + y * 37, size_p.width, size_p.height);
+    	       String s = "" + (y * 8 + x);
+    	       pieces.setText(s);
+    	       pieces.addMouseListener(new MouseAdapter()
+    			 {
+    		    public void mouseClicked(MouseEvent e) {
+//    		    	System.out.println("Hello");
+//    		    	System.out.println("x is : " + pieces.getText());
+//    		    	ImageIcon image2 = new ImageIcon("graph/white.jpg");
+//    		    	pieces.setIcon(image2);
+    		    	game.AIreaction(pieces.getText());
+    		    	print(game, panel);
+    		    
+    		    	
+    		    }
+    		});
+    	   }
+       }
     
        }
-   
-   public void mouseClicked(MouseEvent e) {
-	   
-   }
+
 }
 
 //import java.awt.Dimension;

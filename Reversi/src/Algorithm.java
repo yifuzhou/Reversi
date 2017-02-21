@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Algorithm {
 	public static Move AI_move = new Move(-1, -1);
-	public static int current_depth;
+	public static int current_depth = 7;
 	
 	public static int alphBeta (int[][] board, int alpha, int beta, int depth, int player)
 	{
@@ -116,7 +116,7 @@ public class Algorithm {
 			board = Rule.updateBoard(board, move, -1);
 			int[][] temp = copy2Darray(board); // save the value
 			Rule.printBoard(board);
-			int alpha = -999, beta = 999, depth = 12;
+			int alpha = -999, beta = 999, depth = 7;
 			int value = alphBeta(board, alpha, beta, depth, 1);
 			
 		    board = copy2Darray(temp); // save the value
