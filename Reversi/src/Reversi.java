@@ -15,7 +15,7 @@ public class Reversi {
 	{	
 	}
 	
-	public void printPlayerMove(String s) {
+	public void setPlayerMoveBoard(String s) {
 		int sum = Integer.parseInt(s);
 		int x = sum % 8;
 		int y = sum / 8;
