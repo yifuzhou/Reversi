@@ -2,46 +2,66 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
-public class drawUI extends JFrame {
-	public static int[][] save_board;
-    
-	public static void print(Reversi game, JPanel panel, JLabel pieces) {
+class UpdateBoard extends Thread {
+
+	UpdateBoard(Reversi game, JPanel panel, int[][] save_board)
+	{
+		int movex = -1;
+		int movey = -1;
+		int move_t = -2;
 		for (int y = 0; y < 8; y++) {
 	    	   for (int x = 0; x < 8; x++) {
-	    		   if (game.board[y][x] != save_board[y][x]) {
+	    		   if (game.board[y][x] != 0) {
+	    			   if (save_board[y][x] == 0) {
+		    			   movex = x;
+		    			   movey = y;
+		    			   move_t = game.board[y][x];
+	    				   }
 	    			   if (game.board[y][x] == -1) {
-	    				   ImageIcon image2 = new ImageIcon("graph/black.jpg");
-  	       		    	   pieces.setIcon(image2);
+	    				   ImageIcon image = new ImageIcon("graph/black.jpg");
+	    				   
+	    				   Object obj = panel.getComponent(63 - (y * 8 + x));
+	    					if (obj instanceof JLabel) {
+	    						JLabel temp = (JLabel) obj;
+	    						temp.setIcon(image);
+	    					}
 		    		   }
-	    			   if (game.board[y][x] == 1) {
-	    				   ImageIcon image2 = new ImageIcon("graph/white.jpg");
-  	       		    	   pieces.setIcon(image2);
+	    			   else {
+	    				   ImageIcon image = new ImageIcon("graph/white.jpg");
+	    				   Object obj = panel.getComponent(63 - (y * 8 + x));
+	    					if (obj instanceof JLabel) {
+	    						JLabel temp = (JLabel) obj;
+	    						temp.setIcon(image);
+	    					}
 	    			   }   
 	    		   }
 	    	   }
 		}
+		if (move_t == -1) {
+			ImageIcon image = new ImageIcon("graph/black_c.jpg");
+			   Object obj = panel.getComponent(63 - (movey * 8 + movex));
+				if (obj instanceof JLabel) {
+					JLabel temp = (JLabel) obj;
+					temp.setIcon(image);
+				}
+		}
+		else {
+			ImageIcon image = new ImageIcon("graph/white_c.jpg");
+			   Object obj = panel.getComponent(63 - (movey * 8 + movex));
+				if (obj instanceof JLabel) {
+					JLabel temp = (JLabel) obj;
+					temp.setIcon(image);
+				}
+		}
 	}
-	    		   
-	    		   
-//	    		   JLabel pieces = new JLabel(); 
-//	    		   if (game.board[y][x] == 0) {
-//	    			   pieces.setIcon(new ImageIcon("graph/empty.jpg"));
-//	        	       panel.add(pieces, 0);
-//	    		   }
-//	    		   if (game.board[y][x] == -1) {
-//	    			   pieces.setIcon(new ImageIcon("graph/black.jpg"));
-//	        	       panel.add(pieces, 0);
-//	    		   }
-//	    		   if (game.board[y][x] == 1) {
-//	    			   pieces.setIcon(new ImageIcon("graph/white.jpg"));
-//	        	       panel.add(pieces, 0);
-//	    		   }
-//	    	       Dimension size_p = pieces.getPreferredSize();
-//	    	       pieces.setBounds(26 + x * 37, 26 + y * 37, size_p.width, size_p.height);
-//	    	   }
-//		}	
-//	}
+}
+
+
+public class drawUI extends JFrame {
+	public static int[][] save_board;
+
 
    public static void main(String[] args) {
        JFrame frame=new JFrame("Reversi");  //title
@@ -79,22 +99,20 @@ public class drawUI extends JFrame {
     	       pieces.setBounds(26 + x * 37, 26 + y * 37, size_p.width, size_p.height);
     	       String s = "" + (y * 8 + x);
     	       pieces.setText(s);
+    	       
     	       pieces.addMouseListener(new MouseAdapter()
     			 {
     		    public void mouseClicked(MouseEvent e) {
-//    		    	System.out.println("Hello");
-//    		    	System.out.println("x is : " + pieces.getText());
-//    		    	ImageIcon image2 = new ImageIcon("graph/white.jpg");
-//    		    	pieces.setIcon(image2);
-    		    	Rule.printBoard(game.board);
-    		    	game.printPlayerMove(pieces.getText());
-    		    	Rule.printBoard(save_board);
-    		    	Rule.printBoard(game.board);
-    		    	print(game, panel, pieces);
-    		    	//game.AIreaction();
-    		    	//print(game, panel);
-    		    
+    		    	game.setPlayerMoveBoard(pieces.getText());
+//    		    	Rule.printBoard(save_board);
+//    		    	Rule.printBoard(game.board);
+    		    	new UpdateBoard(game, panel, save_board).start();
     		    	
+    		    	save_board = Algorithm.copy2Darray(game.board);
+    		    	game.AIreaction();
+    		    
+    		    	new UpdateBoard(game, panel, save_board).start();
+    		    
     		    }
     		});
     	   }
