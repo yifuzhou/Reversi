@@ -2,7 +2,10 @@
 Reversi board game in java
 
 Several key classes:
+
 Rule
+
+
 Rule class implements rules of the game and the related methods, including
 Adjust whether it is legal move
 Get all the legal moves in the board
